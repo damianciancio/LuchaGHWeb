@@ -1,0 +1,36 @@
+CREATE TABLE `personajes` (
+  `id_personaje` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(45) CHARACTER SET utf8 NOT NULL,
+  `puntos_disp` int(11) DEFAULT '200',
+  `vida` int(11) DEFAULT NULL,
+  `energia` int(11) DEFAULT NULL,
+  `defensa` int(11) DEFAULT NULL,
+  `evasion` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id_personaje`),
+  UNIQUE KEY `id_UNIQUE` (`id_personaje`),
+  UNIQUE KEY `nombre_UNIQUE` (`nombre`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `partida` (
+  `id_partida` int(11) NOT NULL AUTO_INCREMENT,
+  `id_personaje_ganador` int(11) NOT NULL,
+  `id_personaje_perdedor` int(11) NOT NULL,
+  PRIMARY KEY (`id_partida`),
+  UNIQUE KEY `id_partida_UNIQUE` (`id_partida`),
+  KEY `id_personaje_idx` (`id_personaje_ganador`),
+  KEY `id_personaje_idx1` (`id_personaje_perdedor`),
+  CONSTRAINT `id_personaje` FOREIGN KEY (`id_personaje_ganador`) REFERENCES `personajes` (`id_personaje`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='adiciona 10 puntos a los disponibles al ganador';
+
+USE `luchagh`;
+
+DELIMITER $$
+
+DROP TRIGGER IF EXISTS luchagh.partida_AINS$$
+USE `luchagh`$$
+CREATE TRIGGER `partida_AINS` AFTER INSERT ON `partida` FOR EACH ROW
+BEGIN
+update personajes set personajes.puntos_disp = personajes.puntos_disp+10
+where personajes.id_personaje = new.id_personaje_ganador;
+END$$
+DELIMITER ;
