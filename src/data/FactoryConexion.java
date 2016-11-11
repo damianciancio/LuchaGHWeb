@@ -1,6 +1,6 @@
 package data;
 import util.*;
-
+import com.mysql.jdbc.Driver;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.sql.*;
@@ -26,12 +26,17 @@ public class FactoryConexion {
 			Properties propiedades = new Properties();
 		    InputStream entrada = null;
 		    
-		    entrada = new FileInputStream("config.properties");
-		    propiedades.load(entrada);
+		    //entrada = new FileInputStream("configs/config.properties");
+		    //propiedades.load(entrada);
 			
-		    host = propiedades.getProperty("host");
-		    user = propiedades.getProperty("user");
-		    pass = propiedades.getProperty("pass");
+		    //host = propiedades.getProperty("host");
+		    //user = propiedades.getProperty("user");
+		    //pass = propiedades.getProperty("pass");
+		    
+		    host = "85.10.205.173";
+		    user = "usergh";
+    		pass = "rootgh";
+		    
 			
 		} catch (ClassNotFoundException e) {
 			throw new DriverNoEncontradoException("Error del Driver JDBC", e);
