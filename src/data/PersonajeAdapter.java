@@ -86,6 +86,50 @@ public class PersonajeAdapter {
 		
 		return p;
 	}
+
+	public Personaje GetById(int id) throws Exception
+	{
+		Personaje p = new Personaje();
+		ResultSet rs = null;
+		PreparedStatement stmt = null;
+		try 
+		{
+			stmt = FactoryConexion.getInstancia().getConn().prepareStatement("SELECT * FROM personajes"
+					+ " where personajes.id_personaje = ?");
+			stmt.setInt(1, id);
+			rs = stmt.executeQuery();
+			
+			if (rs.next()) 
+			{
+				p.setId(rs.getInt(1));
+				p.setNombre(rs.getString(2));
+				p.setPtsTotales(rs.getInt(3));
+				p.setVida(rs.getInt(4));
+				p.setEnergia(rs.getInt(5));
+				p.setDefensa(rs.getInt(6));
+				p.setEvasion(rs.getInt(7));
+				
+			}
+		
+		
+		} catch (Exception e) {
+			throw new Exception( e);
+		}
+		finally {
+			try {
+				if(rs!=null) rs.close();
+				if(stmt!=null)stmt.close();
+				FactoryConexion.getInstancia().releaseConn();
+			} catch (ErrorConexionException e) {
+				throw e;
+			} catch (SQLException e) {
+				throw new Exception("Error al cerrar conexion",e);
+			}
+		}
+		
+		
+		return p;
+	}
 	
 	public void Guardar(Personaje pj) throws Exception, ErrorConexionException
 	{

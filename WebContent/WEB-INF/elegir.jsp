@@ -4,7 +4,10 @@
     pageEncoding="ISO-8859-1"%>
 <%
 	ArrayList<Personaje> list;
-	
+	String error = "";
+	if (session.getAttribute("error") instanceof String)
+		error = (String)session.getAttribute("error"); 
+
 	if (session.getAttribute("personajeList") instanceof ArrayList)
 		list = (ArrayList<Personaje>) session.getAttribute("personajeList"); 
 	else
@@ -18,7 +21,7 @@
 </head>
 <body>
 
-<form method="post">
+<form method="GET">
 
 <table>
   <tbody>
@@ -27,14 +30,14 @@
 	</tr>
 	<tr>
 	  <td>
-	    <select id="personajeIzq">
+	    <select id="personajeIzq" name="personajeIzq">
 	    	<% for (Personaje per : list) { %>
 	    	<option value="<%= per.getId() %>"> <%= per.getNombre() %> </option>
 	    	<% } %>
 	    </select>
 	  </td>
 	  <td>
-	    <select id="personajeDer">
+	    <select id="personajeDer" name="personajeDer">
 	    	<% for (Personaje per : list) { %>
 	    	<option value="<%= per.getId() %>"> <%= per.getNombre() %> </option>
 	    	<% } %>
@@ -42,12 +45,14 @@
 	  </td>
 	</tr>
 	<tr>
-	  <td style="text-align: right; ">
-	    <button id="btnComenzar"> Comenzar! </button>
+	  <td colspan="2" style="text-align: right; ">
+	    <input type="submit" value="Comenzar!" id="btnComenzar" />
 	  </td>
 	</tr>
   </tbody>
 </table>
+
+<div style="color: #f00; "><%= error %></div>
 
 </form>
 

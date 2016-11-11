@@ -71,4 +71,8 @@ public class PersonajeLogic {
 	public Personaje GetByNombre(Personaje pj) throws Exception {
 		return _db.GetByNombre(pj);
 	}
+
+	public Personaje GetById(int id) throws Exception {
+		return _db.GetById(id);
+	}
 }
