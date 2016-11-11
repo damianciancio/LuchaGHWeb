@@ -24,8 +24,6 @@ public class Elegir extends HttpServlet {
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		ServletContext sc = getServletContext();
-		
 		String txtIdIzq = request.getParameter("personajeIzq");
 		String txtIdDer = request.getParameter("personajeDer");
 		String error = "";
@@ -44,14 +42,12 @@ public class Elegir extends HttpServlet {
 			request.getSession().setAttribute("PerIzq", perIzq);
 			request.getSession().setAttribute("PerDer", perDer);
 			
-			sc.getRequestDispatcher("/Pelea").forward(request, response);
+			response.sendRedirect("Pelea");
 			return;
-		}
-		catch(NullPointerException npe) {
-			
 		}
 		catch (Exception ex) {
 			error = ex.getMessage();
+			if (error.equals("null")) error = "";
 		}
 
 		request.getSession().setAttribute("error", error);

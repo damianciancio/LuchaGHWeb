@@ -1,36 +1,98 @@
-CREATE TABLE `personajes` (
-  `id_personaje` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(45) CHARACTER SET utf8 NOT NULL,
-  `puntos_disp` int(11) DEFAULT '200',
-  `vida` int(11) DEFAULT NULL,
-  `energia` int(11) DEFAULT NULL,
-  `defensa` int(11) DEFAULT NULL,
-  `evasion` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id_personaje`),
-  UNIQUE KEY `id_UNIQUE` (`id_personaje`),
-  UNIQUE KEY `nombre_UNIQUE` (`nombre`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+# SQL Manager Lite for MySQL 5.5.3.46192
+# ---------------------------------------
+# Host     : 85.10.205.173
+# Port     : 3306
+# Database : luchagh
 
-CREATE TABLE `partida` (
-  `id_partida` int(11) NOT NULL AUTO_INCREMENT,
-  `id_personaje_ganador` int(11) NOT NULL,
-  `id_personaje_perdedor` int(11) NOT NULL,
-  PRIMARY KEY (`id_partida`),
-  UNIQUE KEY `id_partida_UNIQUE` (`id_partida`),
-  KEY `id_personaje_idx` (`id_personaje_ganador`),
-  KEY `id_personaje_idx1` (`id_personaje_perdedor`),
-  CONSTRAINT `id_personaje` FOREIGN KEY (`id_personaje_ganador`) REFERENCES `personajes` (`id_personaje`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='adiciona 10 puntos a los disponibles al ganador';
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES latin1 */;
+
+SET FOREIGN_KEY_CHECKS=0;
+
+CREATE DATABASE `luchagh`
+    CHARACTER SET 'utf8mb4'
+    COLLATE 'utf8mb4_unicode_ci';
 
 USE `luchagh`;
 
+#
+# Structure for the `personajes` table : 
+#
+
+CREATE TABLE `personajes` (
+  `id_personaje` INTEGER(11) NOT NULL AUTO_INCREMENT,
+  `nombre` VARCHAR(45) COLLATE utf8_general_ci NOT NULL,
+  `puntos_disp` INTEGER(11) DEFAULT 200,
+  `vida` INTEGER(11) DEFAULT NULL,
+  `energia` INTEGER(11) DEFAULT NULL,
+  `defensa` INTEGER(11) DEFAULT NULL,
+  `evasion` INTEGER(11) DEFAULT NULL,
+  PRIMARY KEY (`id_personaje`) USING BTREE,
+  UNIQUE KEY `id_UNIQUE` (`id_personaje`) USING BTREE,
+  UNIQUE KEY `nombre_UNIQUE` (`nombre`) USING BTREE
+) ENGINE=InnoDB
+AUTO_INCREMENT=9 ROW_FORMAT=DYNAMIC CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci'
+;
+
+#
+# Structure for the `partida` table : 
+#
+
+CREATE TABLE `partida` (
+  `id_partida` INTEGER(11) NOT NULL AUTO_INCREMENT,
+  `id_personaje_ganador` INTEGER(11) NOT NULL,
+  `id_personaje_perdedor` INTEGER(11) NOT NULL,
+  PRIMARY KEY (`id_partida`) USING BTREE,
+  UNIQUE KEY `id_partida_UNIQUE` (`id_partida`) USING BTREE,
+  KEY `id_personaje_idx` (`id_personaje_ganador`) USING BTREE,
+  KEY `id_personaje_idx1` (`id_personaje_perdedor`) USING BTREE,
+  CONSTRAINT `id_personaje` FOREIGN KEY (`id_personaje_ganador`) REFERENCES `personajes` (`id_personaje`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB
+AUTO_INCREMENT=12 ROW_FORMAT=DYNAMIC CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci'
+COMMENT='adiciona 10 puntos a los disponibles al ganador'
+;
+
+#
+# Data for the `personajes` table  (LIMIT 0,500)
+#
+
+INSERT INTO `personajes` (`id_personaje`, `nombre`, `puntos_disp`, `vida`, `energia`, `defensa`, `evasion`) VALUES
+  (1,'damian',240,100,100,10,10),
+  (8,'Ezequiel',220,75,65,20,40);
+COMMIT;
+
+#
+# Data for the `partida` table  (LIMIT 0,500)
+#
+
+INSERT INTO `partida` (`id_partida`, `id_personaje_ganador`, `id_personaje_perdedor`) VALUES
+  (1,1,3),
+  (2,1,2),
+  (3,1,3),
+  (4,1,5),
+  (7,1,6),
+  (8,8,1),
+  (9,1,8),
+  (10,1,8),
+  (11,8,1);
+COMMIT;
+
+
+
 DELIMITER $$
 
-DROP TRIGGER IF EXISTS luchagh.partida_AINS$$
-USE `luchagh`$$
-CREATE TRIGGER `partida_AINS` AFTER INSERT ON `partida` FOR EACH ROW
+CREATE DEFINER = 'usergh'@'%' TRIGGER `partida_BEFORE_INSERT` BEFORE INSERT ON `partida`
+  FOR EACH ROW
 BEGIN
 update personajes set personajes.puntos_disp = personajes.puntos_disp+10
 where personajes.id_personaje = new.id_personaje_ganador;
 END$$
+
 DELIMITER ;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

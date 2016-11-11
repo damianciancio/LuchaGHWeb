@@ -65,6 +65,7 @@ public class PartidaLogic {
 			esperando = p1;
 		}
 		
+		PartidaVigente = true;
 
 		logPelea = "Pelea entre "+turnoDe.getP().getNombre()+" y "+esperando.getP().getNombre()+".\n\n";
 	}
@@ -76,11 +77,11 @@ public class PartidaLogic {
 		boolean ataqueExitoso = turnoDe.atacar(esperando, cantPtos);
 		if(ataqueExitoso)
 		{
-			logPelea = logPelea  + turnoDe.getP().getNombre()+ " ha quitado " + String.valueOf(ptosPrevios - esperando.getVidaActual())+ " de vida a "+esperando.getP().getNombre()+ "\n";
+			logPelea = logPelea  + turnoDe.getP().getNombre()+ " ha quitado " + String.valueOf(ptosPrevios - esperando.getVidaActual())+ " de vida a "+esperando.getP().getNombre()+ "\r\n";
 		}
 		else
 		{
-			logPelea = logPelea + esperando.getP().getNombre() + " ha esquivado el ataque. "+ turnoDe.getP().getNombre()+" segui participando.\n"; 
+			logPelea = logPelea + esperando.getP().getNombre() + " ha esquivado el ataque. "+ turnoDe.getP().getNombre()+" segui participando.\r\n"; 
 		}
 		cambiarDeTurno();
 		
@@ -94,7 +95,7 @@ public class PartidaLogic {
 		turnoDe.defender();
 		logPelea = logPelea + turnoDe.getP().getNombre()+ " ha recuperado "
 				+String.valueOf(turnoDe.getVidaActual()-ptosAnterioresVida)+" puntos de vida y "
-				+String.valueOf(turnoDe.getEnergiaActual()-ptosAnterioresEnergia)+ " de energía.\n"; 
+				+String.valueOf(turnoDe.getEnergiaActual()-ptosAnterioresEnergia)+ " de energía.\r\n"; 
 		cambiarDeTurno();
 	}
 	
@@ -125,7 +126,7 @@ public class PartidaLogic {
 		la.guardar(turnoDe.getP(), esperando.getP());
 		
 		PartidaVigente = false;
-		logPelea = logPelea + "El personaje"+ turnoDe.getP().getNombre() +" ha ganado.\n\n\n";
+		logPelea = logPelea + "El personaje"+ turnoDe.getP().getNombre() +" ha ganado.\r\n\r\n\r\n";
 		
 	}
 	public boolean isPartidaVigente() {
