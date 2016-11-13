@@ -33,9 +33,9 @@ public class FactoryConexion {
 		    //user = propiedades.getProperty("user");
 		    //pass = propiedades.getProperty("pass");
 		    
-		    host = "85.10.205.173";
-		    user = "usergh";
-    		pass = "rootgh";
+		    host = "localhost";
+		    user = "root";
+    		pass = "";
 		    
 			
 		} catch (ClassNotFoundException e) {
